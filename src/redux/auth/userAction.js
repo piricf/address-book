@@ -11,11 +11,3 @@ export const createUser = (email, password) => {
       });
   };
 };
-
-export const logoutUser = () => {
-  return (dispatch) => {
-    FirebaseAuth.signOut()
-      .then(() => dispatch({ type: "LOGOUT_USER" }))
-      .catch((error) => dispatch({ type: "ERROR", payload: error.message }));
-  };
-};

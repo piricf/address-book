@@ -12,7 +12,7 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/" exact component={LoginFormView} />
-          <Route path="/address-book" component={AddressBookView} />
+          <Route path="/adresar" component={AddressBookView} />
         </Switch>
       </Router>
     </Provider>
