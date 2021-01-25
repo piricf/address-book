@@ -19,7 +19,7 @@ const LoginForm = () => {
     password: "",
   });
   const history = useHistory();
-  const { user, error } = useSelector((state) => state.userReducer);
+  const { user } = useSelector((state) => state.userReducer);
 
   useEffect(() => {
     if (user) {
@@ -27,7 +27,6 @@ const LoginForm = () => {
     }
   }, [user, history]);
 
-  let [errors, setErrors] = useState({});
   const validation = (values) => {
     let errors = {};
     let Regex = new RegExp("^(?=.*[a-z])(?=.*[0-7])(?=.*[!@#$%^&*])(?=.{6,})");
@@ -46,7 +45,7 @@ const LoginForm = () => {
     return errors;
   };
 
-  const handleSignupChange = (e) => {
+  const handleLoginChange = (e) => {
     const { name, value } = e.target;
     setValues({
       ...values,
@@ -54,21 +53,19 @@ const LoginForm = () => {
     });
   };
 
-  const handleSignupSubmit = async (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (
+      values.email !== "" &&
+      values.password !== "" &&
       values.email !== validation(values) &&
       values.password !== validation(values)
     ) {
       dispatch(createUser(values.email, values.password));
     } else {
-      setErrors(validation(values));
+      validation(values);
     }
   };
-
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
 
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
@@ -76,7 +73,7 @@ const LoginForm = () => {
         <Header as="h2" color="teal" textAlign="center">
           New to us? Sign Up!
         </Header>
-        <Form size="large" onSubmit={handleSignupSubmit}>
+        <Form size="large" onSubmit={handleLoginSubmit}>
           <Segment stacked>
             <Form.Input
               fluid
@@ -86,9 +83,9 @@ const LoginForm = () => {
               type="email"
               name="email"
               value={values.email}
-              onChange={handleSignupChange}
+              onChange={handleLoginChange}
             />
-            {errors.email && <Message content={errors.email} />}
+            {values.email && <Message content={validation(values).email} />}
             <Form.Input
               fluid
               icon="lock"
@@ -97,9 +94,11 @@ const LoginForm = () => {
               type="password"
               name="password"
               value={values.password}
-              onChange={handleSignupChange}
+              onChange={handleLoginChange}
             />
-            {errors.password && <Message content={errors.password} />}
+            {values.password && (
+              <Message content={validation(values).password} />
+            )}
             <Button color="teal" fluid size="large" type="submit">
               Log In
             </Button>
