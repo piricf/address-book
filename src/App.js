@@ -1,8 +1,21 @@
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LoginFormView from "./views/LoginFormView";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import "./App.css";
+import AddressBookView from "./views/AddressBookView";
+
 const App = () => {
   return (
-    <div className="App">
-      <h1>address book</h1>
-    </div>
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          <Route path="/" exact component={LoginFormView} />
+          <Route path="/adresar" component={AddressBookView} />
+        </Switch>
+      </Router>
+    </Provider>
   );
 };
 
