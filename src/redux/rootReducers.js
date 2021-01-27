@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { userReducer } from "./auth/userReducer";
+import { contactReducer } from "./contacts/contactReducer";
 // import { persistReducer } from "redux-persist";
 // import storage from "redux-persist/lib/storage";
 
@@ -11,6 +12,7 @@ import { userReducer } from "./auth/userReducer";
 
 const rootReducers = combineReducers({
   userReducer: userReducer,
+  contactReducer: contactReducer,
 });
 
 export default rootReducers;

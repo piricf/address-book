@@ -21,9 +21,4 @@ const firebaseWithConfig = !firebase.apps.length
   : firebase.app();
 
 export const FirebaseAuth = firebaseWithConfig.auth();
-
-// firebase.database().ref('users/'+user.iud/contacts/this.state.contactId).set({
-//   title: this.state.answers.title,
-//   location: this.state.answers.location,
-//   description: this.state.answers.description
-// });
+export const FirebaseDatabe = firebaseWithConfig.database();

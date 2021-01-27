@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import "./App.css";
 import AddressBookView from "./views/AddressBookView";
+import AddContactView from "./views/AddContactView";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={LoginFormView} />
           <Route path="/adresar" component={AddressBookView} />
+          <Route path="/kontakti" component={AddContactView} />
         </Switch>
       </Router>
     </Provider>

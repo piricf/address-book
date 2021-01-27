@@ -50,6 +50,7 @@ const LoginForm = () => {
       });
     }
   };
+  console.log(error);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
