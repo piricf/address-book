@@ -4,12 +4,12 @@ export const createContact = (contact) => {
   let newContact = {
     firstName: contact.firstName,
     lastName: contact.lastName,
+    BirthDate: contact.BirthDate,
     contactOption: {
       contactType: contact.contactOptionSelected,
       contactTypeValue: contact.contactOptionValue,
     },
   };
-  console.log(newContact);
   return (dispatch) => {
     FirebaseDatabe.ref("/users/" + contact.userUid + "/contacts")
       .push()

@@ -11,16 +11,18 @@ const AddContactForm = () => {
   const [lastName, setLastName] = useState("");
   const [contactOptionSelected, setContactOptionSelected] = useState("");
   const [contactOptionValue, setContactOptionValue] = useState("");
-  const [date, setDate] = useState(new Date("2014-08-18T21:11:54"));
-  console.log(date);
+
+  const [BirthDate, setBirthDate] = useState(new Date("2014-08-18T21:11:54"));
+
+  const { user } = useSelector((state) => state.userReducer);
 
   const [calendar, setCalendar] = useState(false);
   const [hidden, setHIdden] = useState(true);
   const dispatch = useDispatch();
 
-  // const dateChange = (date) => {
-  //   setDate(date);
-  // };
+  const dateChange = (value) => {
+    setBirthDate(value);
+  };
   const hanldeOptionValueAndHidden = (value) => {
     setHIdden(!hidden);
     setContactOptionSelected(value);
@@ -29,8 +31,6 @@ const AddContactForm = () => {
   const calendarChange = () => {
     setCalendar(!calendar);
   };
-
-  const { user } = useSelector((state) => state.userReducer);
 
   let contactOptions = [
     { key: "mobile-phone", value: "mobile-phone", text: "Mobitel" },
@@ -45,7 +45,7 @@ const AddContactForm = () => {
     let contact = {
       firstName,
       lastName,
-      date,
+      BirthDate: BirthDate.toDateString(),
       contactOptionSelected,
       contactOptionValue,
       userUid,
@@ -74,7 +74,7 @@ const AddContactForm = () => {
           />
           <Form.Button onClick={calendarChange}>Pick a date</Form.Button>
           {calendar ? (
-            <Calendar onChange={(e) => setDate(e.target.date)} />
+            <Calendar onChange={(value) => dateChange(value)} />
           ) : null}
           <Form.Select
             placeholder="Select type of contact"
