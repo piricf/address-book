@@ -16,7 +16,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user) {
-      history.push("/adresar");
+      history.push("/kontakti");
     }
   }, [user, history]);
 
