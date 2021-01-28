@@ -2,14 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createUser } from "../redux/auth/userAction";
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment,
-} from "semantic-ui-react";
+import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 const LoginForm = () => {
@@ -19,11 +12,11 @@ const LoginForm = () => {
     password: "",
   });
   const history = useHistory();
-  const { user } = useSelector((state) => state.userReducer);
+  const { user, error } = useSelector((state) => state.userReducer);
 
   useEffect(() => {
     if (user) {
-      history.push("/adresar");
+      history.push("/kontakti");
     }
   }, [user, history]);
 
@@ -47,31 +40,34 @@ const LoginForm = () => {
 
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
-    setValues({
-      ...values,
-      [name]: value,
-    });
+    if (
+      values !== validation(values).email &&
+      values !== validation(values).password
+    ) {
+      setValues({
+        ...values,
+        [name]: value,
+      });
+    }
   };
+  console.log(error);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    if (
-      values.email !== "" &&
-      values.password !== "" &&
-      values.email !== validation(values) &&
-      values.password !== validation(values)
-    ) {
-      dispatch(createUser(values.email, values.password));
-    } else {
-      validation(values);
-    }
+
+    dispatch(createUser(values.email, values.password));
+    validation(values);
   };
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" color="teal" textAlign="center">
-          New to us? Sign Up!
+          Login
         </Header>
         <Form size="large" onSubmit={handleLoginSubmit}>
           <Segment stacked>
@@ -85,7 +81,7 @@ const LoginForm = () => {
               value={values.email}
               onChange={handleLoginChange}
             />
-            {values.email && <Message content={validation(values).email} />}
+            {values.email && <p> {validation(values).email} </p>}
             <Form.Input
               fluid
               icon="lock"
@@ -96,9 +92,8 @@ const LoginForm = () => {
               value={values.password}
               onChange={handleLoginChange}
             />
-            {values.password && (
-              <Message content={validation(values).password} />
-            )}
+            {values.password && <p> {validation(values).password} </p>}
+            <p>{error}</p>
             <Button color="teal" fluid size="large" type="submit">
               Log In
             </Button>

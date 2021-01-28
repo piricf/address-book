@@ -21,3 +21,4 @@ const firebaseWithConfig = !firebase.apps.length
   : firebase.app();
 
 export const FirebaseAuth = firebaseWithConfig.auth();
+export const FirebaseDatabe = firebaseWithConfig.database();
