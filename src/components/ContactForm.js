@@ -11,7 +11,6 @@ const AddContactForm = () => {
   const [lastName, setLastName] = useState("");
   const [contactOptionSelected, setContactOptionSelected] = useState("");
   const [contactOptionValue, setContactOptionValue] = useState("");
-
   const [BirthDate, setBirthDate] = useState(new Date("2014-08-18T21:11:54"));
 
   const { user } = useSelector((state) => state.userReducer);
@@ -32,6 +31,45 @@ const AddContactForm = () => {
     setCalendar(!calendar);
   };
 
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    BirthDate: "",
+    contactOptionValue: "",
+    contactOptionSelected: "",
+  });
+
+  const validation = () => {
+    let error = {
+      firstName: "",
+      lastName: "",
+      contactOptionValue: "",
+      contactOptionSelected: "",
+      BirthDate: "",
+    };
+    if (!firstName) {
+      error.firstName = "First name is required";
+    } else if (firstName > 5) {
+      error.firstName = "First name should be under 100 characters";
+    }
+    if (!lastName) {
+      error.lastName = "Last name is required";
+    } else if (lastName > 5) {
+      error.lastName = "Last name should be under 200 characters";
+    }
+    if (!contactOptionValue) {
+      error.contactOptionValue =
+        "Phone, mobile phone, email or pager is required";
+    }
+    if (!contactOptionSelected) {
+      error.contactOptionSelected = "You have to select type of contact";
+    }
+    if (!BirthDate) {
+      error.BirthDate = "Must pick the date";
+    }
+    setErrors(error);
+  };
+
   let contactOptions = [
     { key: "mobile-phone", value: "mobile-phone", text: "Mobitel" },
     { key: "phone", value: "phone", text: "Fiksni" },
@@ -50,7 +88,17 @@ const AddContactForm = () => {
       contactOptionValue,
       userUid,
     };
-    dispatch(createContact(contact));
+    if (
+      errors.firstName === "" &&
+      errors.lastName === "" &&
+      errors.contactOptionValue === "" &&
+      errors.contactOptionSelected === "" &&
+      errors.BirthDate === ""
+    ) {
+      validation();
+    } else {
+      dispatch(createContact(contact));
+    }
   };
 
   return (
@@ -65,6 +113,9 @@ const AddContactForm = () => {
             id="firstName"
             onChange={(e) => setFirstName(e.target.value)}
           />
+          {errors.firstName !== "" ? (
+            <p style={{ color: "red" }}>{errors.firstName}</p>
+          ) : null}
           <Form.Input
             type="text"
             name="lastName"
@@ -72,16 +123,23 @@ const AddContactForm = () => {
             id="lastName"
             onChange={(e) => setLastName(e.target.value)}
           />
+          {errors.lastName ? (
+            <p style={{ color: "red" }}>{errors.lastName}</p>
+          ) : null}
           <Form.Button onClick={calendarChange}>Pick a date</Form.Button>
           {calendar ? (
             <Calendar onChange={(value) => dateChange(value)} />
           ) : null}
+          {errors.BirthDate !== "" ? <p>{errors.BirthDate}</p> : null}
           <Form.Select
             placeholder="Select type of contact"
-            name={contactOptions.name}
+            name={contactOptions.text}
             options={contactOptions}
             onChange={(e, { value }) => hanldeOptionValueAndHidden(value)}
           />
+          {errors.contactOptionSelected !== "" ? (
+            <p style={{ color: "red" }}>{errors.contactOptionSelected}</p>
+          ) : null}
           {hidden ? null : (
             <Form.Input
               type="text"
@@ -89,6 +147,9 @@ const AddContactForm = () => {
               onChange={(e) => setContactOptionValue(e.target.value)}
             />
           )}
+          {errors.contactOptionValue !== "" ? (
+            <p style={{ color: "red" }}>{errors.contactOptionValue}</p>
+          ) : null}
           <Button color="teal" fluid size="large" type="submit">
             Add contact
           </Button>
