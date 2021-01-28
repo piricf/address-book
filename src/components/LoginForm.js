@@ -16,7 +16,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user) {
-      history.push("/adresar");
+      history.push("/kontakti");
     }
   }, [user, history]);
 
@@ -50,6 +50,7 @@ const LoginForm = () => {
       });
     }
   };
+  console.log(error);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
