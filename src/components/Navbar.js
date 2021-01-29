@@ -2,10 +2,17 @@ import React from "react";
 import { Input, Menu } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/auth/userAction";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.userReducer);
+
+  const logout = () => {
+    dispatch(logoutUser());
+  };
   return (
     <Menu secondary>
       <Link to="/adresar">
@@ -19,7 +26,7 @@ const Navbar = () => {
           <Input icon="search" placeholder="Search..." />
         </Menu.Item>
         {user ? (
-          <Link to="/">
+          <Link to="/" onClick={logout}>
             <Menu.Item>Log Out</Menu.Item>
           </Link>
         ) : (

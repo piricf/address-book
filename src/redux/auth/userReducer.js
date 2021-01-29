@@ -11,6 +11,12 @@ export const userReducer = (state = INITIAL_STATE, action) => {
         user: action.payload,
         error: undefined,
       };
+    case "LOGOUT_USER":
+      return {
+        ...state,
+        user: action.payload,
+        error: undefined,
+      };
     case "ERROR":
       return {
         ...state,
