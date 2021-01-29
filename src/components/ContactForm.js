@@ -49,13 +49,13 @@ const AddContactForm = () => {
     };
     if (!firstName) {
       error.firstName = "First name is required";
-    } else if (firstName > 5) {
+    } else if (firstName > 100) {
       error.firstName = "First name should be under 100 characters";
     }
     if (!lastName) {
       error.lastName = "Last name is required";
-    } else if (lastName > 5) {
-      error.lastName = "Last name should be under 200 characters";
+    } else if (lastName > 300) {
+      error.lastName = "Last name should be under 300 characters";
     }
     if (!contactOptionValue) {
       error.contactOptionValue =

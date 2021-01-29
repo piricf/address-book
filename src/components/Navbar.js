@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Button, Input, Menu } from "semantic-ui-react";
+import { Button, Menu } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,9 +34,9 @@ const Navbar = () => {
         </Menu.Menu>
       ) : null}
       <Menu.Menu position="right">
-        <Menu.Item>
+        {/* <Menu.Item>
           <Input icon="search" placeholder="Search..." />
-        </Menu.Item>
+        </Menu.Item> */}
         {user ? (
           <Button to="/" onClick={logout}>
             <Menu.Item>Log Out</Menu.Item>
