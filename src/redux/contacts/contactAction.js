@@ -4,7 +4,7 @@ export const createContact = (contact) => {
   let newContact = {
     firstName: contact.firstName,
     lastName: contact.lastName,
-    BirthDate: contact.BirthDate,
+    birthDate: contact.birthDate,
     contactOption: {
       contactType: contact.contactOptionSelected,
       contactTypeValue: contact.contactOptionValue,
@@ -16,5 +16,37 @@ export const createContact = (contact) => {
       .set(newContact)
       .then((contact) => dispatch({ type: "CREATE_CONTACT", payload: contact }))
       .catch((error) => dispatch({ type: "ERROR", payload: error }));
+  };
+};
+
+export const getAllContacts = (userUid) => {
+  let allContacts = [];
+  return (dispatch) => {
+    FirebaseDatabe.ref("/users/" + userUid + "/contacts")
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((child) => {
+          allContacts.push({
+            id: child.key,
+            ...child.val(),
+          });
+        });
+        console.log("from action", snapshot);
+        dispatch({ type: "GET_CONTACTS", payload: allContacts });
+        console.log("all contacts", allContacts);
+      })
+      .catch((error) => {
+        dispatch({ type: "ERROR", payload: error.message });
+      });
+  };
+};
+
+export const deleteContact = (userUid, id) => {
+  return (dispatch) => {
+    FirebaseDatabe.ref("/users/" + userUid + "/contacts/id")
+      // .child(`contacts/${id}`)
+      .remove()
+      .then(() => dispatch({ type: "DELETE_CONTACT" }))
+      .catch((error) => dispatch({ type: "ERROR", payload: error.message }));
   };
 };

@@ -11,7 +11,7 @@ const AddContactForm = () => {
   const [lastName, setLastName] = useState("");
   const [contactOptionSelected, setContactOptionSelected] = useState("");
   const [contactOptionValue, setContactOptionValue] = useState("");
-  const [BirthDate, setBirthDate] = useState(new Date("2014-08-18T21:11:54"));
+  const [birthDate, setBirthDate] = useState(new Date("2014-08-18T21:11:54"));
 
   const { user } = useSelector((state) => state.userReducer);
 
@@ -34,7 +34,7 @@ const AddContactForm = () => {
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
-    BirthDate: "",
+    birthDate: "",
     contactOptionValue: "",
     contactOptionSelected: "",
   });
@@ -45,7 +45,7 @@ const AddContactForm = () => {
       lastName: "",
       contactOptionValue: "",
       contactOptionSelected: "",
-      BirthDate: "",
+      birthDate: "",
     };
     if (!firstName) {
       error.firstName = "First name is required";
@@ -64,8 +64,8 @@ const AddContactForm = () => {
     if (!contactOptionSelected) {
       error.contactOptionSelected = "You have to select type of contact";
     }
-    if (!BirthDate) {
-      error.BirthDate = "Must pick the date";
+    if (!birthDate) {
+      error.birthDate = "Must pick the date";
     }
     setErrors(error);
   };
@@ -83,7 +83,7 @@ const AddContactForm = () => {
     let contact = {
       firstName,
       lastName,
-      BirthDate: BirthDate.toDateString(),
+      birthDate: birthDate.toDateString(),
       contactOptionSelected,
       contactOptionValue,
       userUid,
@@ -93,7 +93,7 @@ const AddContactForm = () => {
       errors.lastName === "" &&
       errors.contactOptionValue === "" &&
       errors.contactOptionSelected === "" &&
-      errors.BirthDate === ""
+      errors.birthDate === ""
     ) {
       validation();
     } else {
@@ -130,7 +130,7 @@ const AddContactForm = () => {
           {calendar ? (
             <Calendar onChange={(value) => dateChange(value)} />
           ) : null}
-          {errors.BirthDate !== "" ? <p>{errors.BirthDate}</p> : null}
+          {errors.birthDate !== "" ? <p>{errors.birthDate}</p> : null}
           <Form.Select
             placeholder="Select type of contact"
             name={contactOptions.text}

@@ -11,6 +11,17 @@ export const contactReducer = (state = INITIAL_STATE, action) => {
         contact: [...state.contact, action.payload],
         error: undefined,
       };
+    case "GET_CONTACTS":
+      return {
+        ...state,
+        contact: action.payload,
+        error: undefined,
+      };
+    case "DELETE_CONTACT":
+      return {
+        ...state,
+        error: undefined,
+      };
     case "ERROR":
       return {
         ...state,
