@@ -5,10 +5,10 @@ export const createContact = (contact) => {
     firstName: contact.firstName,
     lastName: contact.lastName,
     birthDate: contact.birthDate,
-    contactOption: {
-      contactType: contact.contactOptionSelected,
-      contactTypeValue: contact.contactOptionValue,
-    },
+    // contactOption: {
+    //   contactType: contact.contactOptionSelected,
+    //   contactTypeValue: contact.contactOptionValue,
+    // },
   };
   return (dispatch) => {
     FirebaseDatabe.ref("/users/" + contact.userUid + "/contacts")
@@ -31,9 +31,7 @@ export const getAllContacts = (userUid) => {
             ...child.val(),
           });
         });
-        console.log("from action", snapshot);
         dispatch({ type: "GET_CONTACTS", payload: allContacts });
-        console.log("all contacts", allContacts);
       })
       .catch((error) => {
         dispatch({ type: "ERROR", payload: error.message });
@@ -43,7 +41,7 @@ export const getAllContacts = (userUid) => {
 
 export const deleteContact = (userUid, id) => {
   return (dispatch) => {
-    FirebaseDatabe.ref("/users/" + userUid + "/contacts/id")
+    FirebaseDatabe.ref("/users/" + userUid + "/contacts")
       // .child(`contacts/${id}`)
       .remove()
       .then(() => dispatch({ type: "DELETE_CONTACT" }))
