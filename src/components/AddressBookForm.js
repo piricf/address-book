@@ -50,6 +50,11 @@ const AddressBookForm = () => {
         Your Address book!
       </Header>
       <select
+        style={{
+          marginLeft: "700px",
+          marginBottom: "100px",
+          borderRadius: "8px",
+        }}
         value={pageSize}
         name="contactOptions"
         id="contactOptions"
@@ -75,6 +80,8 @@ const AddressBookForm = () => {
             birthDate={contact?.birthDate}
             firstName={contact?.firstName}
             lastName={contact?.lastName}
+            contactOptions={contact?.contactOptions}
+            contactType={contact?.contactType}
             deleteContactHandler={deleteContactHandler}
             id={contact?.id}
           />
@@ -82,6 +89,12 @@ const AddressBookForm = () => {
       </div>
       <div>
         <Pagination
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "25%",
+            marginLeft: "700px",
+          }}
           activePage={page}
           onPageChange={onPageChange}
           totalPages={10}

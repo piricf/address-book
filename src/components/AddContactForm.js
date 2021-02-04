@@ -99,6 +99,7 @@ const AddContactForm = () => {
       dispatch(createContact(contactData, userUid));
     }
   };
+  console.log(contactData.birthDate);
 
   return (
     <Form onSubmit={handleContactSubmit}>
