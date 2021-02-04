@@ -1,16 +1,25 @@
 import React from "react";
 import { Card, List, Grid, Button, Icon } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-
-const ContactCardForm = ({ firstName, lastName, deleteContactHandler, id }) => {
+import moment from "moment";
+const ContactCardForm = ({
+  firstName,
+  lastName,
+  deleteContactHandler,
+  id,
+  birthDate,
+}) => {
   const deleteContact = () => {
     deleteContactHandler(id);
   };
 
+  const formatDate = moment(birthDate).format("DD.MM.YYYY");
+  console.log(formatDate);
+
   return (
     <Grid textAlign="center" style={{ height: "20vh" }} verticalAlign="middle">
       <Card
-        style={{ marginBottom: "50px", width: "80vh", boxShadow: "55px gray" }}
+      // style={{ marginBottom: "50px", width: "80vh", boxShadow: "55px gray" }}
       >
         <List>
           <List.Item
@@ -29,6 +38,7 @@ const ContactCardForm = ({ firstName, lastName, deleteContactHandler, id }) => {
           >
             {lastName}
           </List.Item>
+          <List.Item>{formatDate}</List.Item>
         </List>
         <Button
           style={{

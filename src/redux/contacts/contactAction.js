@@ -1,19 +1,11 @@
 import { FirebaseDatabe } from "../../firebase/FirebaseConfig";
 
-export const createContact = (contact) => {
-  let newContact = {
-    firstName: contact.firstName,
-    lastName: contact.lastName,
-    birthDate: contact.birthDate,
-    // contactOption: {
-    //   contactType: contact.contactOptionSelected,
-    //   contactTypeValue: contact.contactOptionValue,
-    // },
-  };
+export const createContact = (contactData, userUid) => {
+  console.log(contactData, userUid)
   return (dispatch) => {
-    FirebaseDatabe.ref("/users/" + contact.userUid + "/contacts")
+    FirebaseDatabe.ref("/users/" + userUid + "/contacts")
       .push()
-      .set(newContact)
+      .set(contactData)
       .then((contact) => dispatch({ type: "CREATE_CONTACT", payload: contact }))
       .catch((error) => dispatch({ type: "ERROR", payload: error }));
   };

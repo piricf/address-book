@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Pagination } from "semantic-ui-react";
 import { getAllContacts, deleteContact } from "../redux/contacts/contactAction";
@@ -10,7 +10,8 @@ const AddressBookForm = () => {
 
   const userUid = useSelector((state) => state.userReducer.user.user.uid);
   const contacts = useSelector((state) => state.contactReducer.contact);
-
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(15);
   console.log("contact", contacts);
 
   useEffect(() => {
@@ -21,6 +22,24 @@ const AddressBookForm = () => {
     dispatch(deleteContact(userUid));
   };
 
+  const onPageChange = (e, data) => {
+    const { activePage } = data;
+    console.log(activePage);
+    setPage(activePage);
+  };
+
+  const handlePageSizeChange = ({ target }) => {
+    const { value } = target;
+    setPageSize(value);
+  };
+
+  const paginateContacts = contacts.slice(
+    pageSize * (page - 1),
+    pageSize * (page - 1) + pageSize
+  );
+
+  console.log(paginateContacts, "owqkewqoewqoekqw");
+
   return (
     <div>
       <Header
@@ -30,16 +49,44 @@ const AddressBookForm = () => {
       >
         Your Address book!
       </Header>
-      {contacts?.map((contact, i) => (
-        <ContactCardForm
-          key={i}
-          firstName={contact?.firstName}
-          lastName={contact?.lastName}
-          deleteContactHandler={deleteContactHandler}
-          id={contact?.id}
+      <select
+        value={pageSize}
+        name="contactOptions"
+        id="contactOptions"
+        placeholder="Select type of contact"
+        onChange={handlePageSizeChange}
+      >
+        <option value="" selected hidden>
+          Choose page size
+        </option>
+
+        <option value="15" id="15">
+          15
+        </option>
+        <option value="30" id="30">
+          30
+        </option>
+        <option value="45">45</option>
+      </select>{" "}
+      <div>
+        {paginateContacts?.map((contact, i) => (
+          <ContactCardForm
+            key={i}
+            birthDate={contact?.birthDate}
+            firstName={contact?.firstName}
+            lastName={contact?.lastName}
+            deleteContactHandler={deleteContactHandler}
+            id={contact?.id}
+          />
+        ))}
+      </div>
+      <div>
+        <Pagination
+          activePage={page}
+          onPageChange={onPageChange}
+          totalPages={10}
         />
-      ))}
-      <Pagination defaultActivePage={5} totalPages={10} />
+      </div>
     </div>
   );
 };
