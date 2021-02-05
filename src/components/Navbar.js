@@ -34,9 +34,6 @@ const Navbar = () => {
         </Menu.Menu>
       ) : null}
       <Menu.Menu position="right">
-        {/* <Menu.Item>
-          <Input icon="search" placeholder="Search..." />
-        </Menu.Item> */}
         {user ? (
           <Button to="/" onClick={logout}>
             <Menu.Item>Log Out</Menu.Item>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Pagination } from "semantic-ui-react";
-import { getAllContacts, deleteContact } from "../redux/contacts/contactAction";
+import { getAllContacts } from "../redux/contacts/contactAction";
 import ContactCardForm from "./ContactCardForm";
 import "semantic-ui-css/semantic.min.css";
 
@@ -12,19 +12,27 @@ const AddressBookForm = () => {
   const contacts = useSelector((state) => state.contactReducer.contact);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
-  console.log("contact", contacts);
+
+  const [contactList, setContactList] = useState(contacts);
+  const sortByLastName = () => {
+    const sorted = [...contactList].sort((a, b) =>
+      a.lastName > b.lastName ? 1 : -1
+    );
+    setContactList(sorted);
+  };
+  const sortByLastNameDown = () => {
+    const sorted = [...contactList].sort((a, b) =>
+      a.lastName < b.lastName ? 1 : -1
+    );
+    setContactList(sorted);
+  };
 
   useEffect(() => {
     dispatch(getAllContacts(userUid));
   }, [dispatch, userUid]);
 
-  const deleteContactHandler = (userUid) => {
-    dispatch(deleteContact(userUid));
-  };
-
   const onPageChange = (e, data) => {
     const { activePage } = data;
-    console.log(activePage);
     setPage(activePage);
   };
 
@@ -33,19 +41,17 @@ const AddressBookForm = () => {
     setPageSize(value);
   };
 
-  const paginateContacts = contacts.slice(
+  const paginateContacts = contactList.slice(
     pageSize * (page - 1),
     pageSize * (page - 1) + pageSize
   );
-
-  console.log(paginateContacts, "owqkewqoewqoekqw");
 
   return (
     <div>
       <Header
         textAlign="center"
         style={{ height: "5vh" }}
-        verticalAlign="middle"
+        // verticalAlign="middle"
       >
         Your Address book!
       </Header>
@@ -71,7 +77,9 @@ const AddressBookForm = () => {
         <option value="30" id="30">
           30
         </option>
-        <option value="45">45</option>
+        <option value="45" id="45">
+          45
+        </option>
       </select>{" "}
       <div>
         {paginateContacts?.map((contact, i) => (
@@ -82,7 +90,7 @@ const AddressBookForm = () => {
             lastName={contact?.lastName}
             contactOptions={contact?.contactOptions}
             contactType={contact?.contactType}
-            deleteContactHandler={deleteContactHandler}
+            userUid={userUid}
             id={contact?.id}
           />
         ))}
@@ -99,6 +107,10 @@ const AddressBookForm = () => {
           onPageChange={onPageChange}
           totalPages={10}
         />
+      </div>
+      <div>
+        <button onClick={sortByLastName}>up</button>
+        <button onClick={sortByLastNameDown}>Down</button>
       </div>
     </div>
   );

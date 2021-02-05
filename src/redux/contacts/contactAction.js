@@ -24,7 +24,6 @@ export const getAllContacts = (userUid) => {
           });
         });
         dispatch({ type: "GET_CONTACTS", payload: allContacts });
-        console.log("all contacts", allContacts);
       })
       .catch((error) => {
         dispatch({ type: "ERROR", payload: error.message });
@@ -34,8 +33,8 @@ export const getAllContacts = (userUid) => {
 
 export const deleteContact = (userUid, id) => {
   return (dispatch) => {
-    FirebaseDatabe.ref("/users/" + userUid + "/contacts/id")
-      // .child(`contacts/${id}`)
+    FirebaseDatabe.ref("/users/" + userUid + "/contacts/")
+      .child(`${id}`)
       .remove()
       .then(() => dispatch({ type: "DELETE_CONTACT" }))
       .catch((error) => dispatch({ type: "ERROR", payload: error.message }));
