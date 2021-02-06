@@ -4,6 +4,7 @@ import "semantic-ui-css/semantic.min.css";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { deleteContact } from "../redux/contacts/contactAction";
+import ContactModal from "./ContactModal";
 
 const ContactCardForm = ({
   firstName,
@@ -45,14 +46,15 @@ const ContactCardForm = ({
           </List.Item>
           <List.Item style={{ marginBottom: "15px" }}>
             <p>{contactType}: </p>
-            {contactOptions.mobilePhone ? (
+            {contactOptions?.mobilePhone ? (
               <p>{contactOptions.mobilePhone}</p>
             ) : null}
-            {contactOptions.phone ? <p>{contactOptions.phone}</p> : null}
-            {contactOptions.email ? <p>{contactOptions.email}</p> : null}
-            {contactOptions.pager ? <p>{contactOptions.pager}</p> : null}
+            {contactOptions?.phone ? <p>{contactOptions.phone}</p> : null}
+            {contactOptions?.email ? <p>{contactOptions.email}</p> : null}
+            {contactOptions?.pager ? <p>{contactOptions.pager}</p> : null}
           </List.Item>
         </List>
+        <ContactModal />
         <Button
           style={{
             position: "absolute",

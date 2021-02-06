@@ -2,7 +2,6 @@ const INITIAL_STATE = {
   contact: [],
   error: undefined,
 };
-
 export const contactReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case "CREATE_CONTACT":
@@ -12,6 +11,12 @@ export const contactReducer = (state = INITIAL_STATE, action) => {
         error: undefined,
       };
     case "GET_CONTACTS":
+      return {
+        ...state,
+        contact: action.payload,
+        error: undefined,
+      };
+    case "UPDATE_CONTACT":
       return {
         ...state,
         contact: action.payload,

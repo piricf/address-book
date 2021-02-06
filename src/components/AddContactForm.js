@@ -5,8 +5,9 @@ import "react-calendar/dist/Calendar.css";
 import Calendar from "react-calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { createContact } from "../redux/contacts/contactAction";
+import { Redirect } from "react-router-dom";
 
-const AddContactForm = () => {
+const AddContactForm = ({ isEdit }) => {
   const dispatch = useDispatch();
   const [contactData, setContactData] = useState({
     firstName: "",
@@ -27,6 +28,7 @@ const AddContactForm = () => {
 
   const userUid = useSelector((state) => state.userReducer.user.user.uid);
   const [error, setError] = useState(false);
+  const [redirect, setRedirect] = useState("");
 
   useEffect(() => {
     setContactData({
@@ -56,9 +58,15 @@ const AddContactForm = () => {
     });
   };
 
+  const handleDateChange = (value) => {
+    setContactData({
+      ...contactData,
+      birthDate: value,
+    });
+  };
+
   const handleContactOptionsChange = ({ target }) => {
     const { name, value } = target;
-
     setContactData({
       ...contactData,
       contactOptions: {
@@ -82,13 +90,6 @@ const AddContactForm = () => {
     return errors;
   };
 
-  const handleDateChange = (value) => {
-    setContactData({
-      ...contactData,
-      birthDate: value,
-    });
-  };
-
   const handleContactSubmit = (e) => {
     e.preventDefault();
     const validation = validate(contactData);
@@ -97,9 +98,14 @@ const AddContactForm = () => {
       setError(true);
     } else {
       dispatch(createContact(contactData, userUid));
+      setRedirect(true);
     }
   };
-  console.log(contactData.birthDate);
+
+  const redirectTo = redirect;
+  if (redirectTo) {
+    return <Redirect to="/adresar" />;
+  }
 
   return (
     <Form onSubmit={handleContactSubmit}>
@@ -163,7 +169,6 @@ const AddContactForm = () => {
           )}
         </>
       )}
-
       <Button type="submit">Add Contact</Button>
     </Form>
   );

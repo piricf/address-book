@@ -13,13 +13,14 @@ const Navbar = () => {
 
   const logout = () => {
     dispatch(logoutUser());
+    history.push("/");
   };
 
-  useEffect(() => {
-    if (!user) {
-      history.push("/");
-    }
-  }, [user, history]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     history.push("/");
+  //   }
+  // }, [user, history]);
 
   return (
     <Menu secondary>
