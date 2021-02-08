@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, List, Grid, Button, Icon } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import moment from "moment";
 import { useDispatch } from "react-redux";
 import { deleteContact } from "../redux/contacts/contactAction";
 import ContactModal from "./ContactModal";
+import { Redirect } from "react-router-dom";
+import { Rating } from "semantic-ui-react";
 
 const ContactCardForm = ({
   firstName,
@@ -14,12 +16,27 @@ const ContactCardForm = ({
   birthDate,
   contactOptions,
   contactType,
+  contactList,
+  favorites,
+  handleFavorites,
 }) => {
   const dispatch = useDispatch();
+  const [redirect, setRedirect] = useState(false);
+  const [details, setDetails] = useState(false);
 
   const deleteContactById = () => {
     dispatch(deleteContact(userUid, id));
+    setRedirect(true);
   };
+
+  const showDetails = () => {
+    setDetails(!details);
+  };
+
+  const redirectTo = redirect;
+  if (redirectTo) {
+    return <Redirect to="/adresar" />;
+  }
 
   const formatDate = moment(birthDate).format("DD.MM.YYYY");
 
@@ -44,17 +61,32 @@ const ContactCardForm = ({
             <p>Birth Date:</p>
             {formatDate}
           </List.Item>
-          <List.Item style={{ marginBottom: "15px" }}>
-            <p>{contactType}: </p>
-            {contactOptions?.mobilePhone ? (
-              <p>{contactOptions.mobilePhone}</p>
-            ) : null}
-            {contactOptions?.phone ? <p>{contactOptions.phone}</p> : null}
-            {contactOptions?.email ? <p>{contactOptions.email}</p> : null}
-            {contactOptions?.pager ? <p>{contactOptions.pager}</p> : null}
-          </List.Item>
+          <Button onClick={showDetails}>details</Button>
+          {details ? (
+            <List.Item
+              style={{
+                marginBottom: "15px",
+                display: "flex",
+                justifyContent: "flex-start",
+                color: "secondary",
+              }}
+            >
+              <p>{contactType}: </p>
+              {contactOptions?.mobilePhone ? (
+                <p>{contactOptions.mobilePhone}</p>
+              ) : null}
+              {contactOptions?.phone ? <p>{contactOptions.phone}</p> : null}
+              {contactOptions?.email ? <p>{contactOptions.email}</p> : null}
+              {contactOptions?.pager ? <p>{contactOptions.pager}</p> : null}
+            </List.Item>
+          ) : null}
         </List>
-        <ContactModal />
+        <ContactModal
+          contactList={contactList}
+          id={id}
+          firstName={firstName}
+          lastName={lastName}
+        />
         <Button
           style={{
             position: "absolute",
@@ -66,6 +98,12 @@ const ContactCardForm = ({
           onClick={() => deleteContactById(id)}
         >
           <Icon link name="trash" style={{ fontSize: "20px" }} />
+        </Button>
+        <Button
+          style={favorites ? { backgroundColor: "red" } : { backgroundColor: "blue" }}
+          onClick={handleFavorites(id)}
+        >
+          <Rating />
         </Button>
       </Card>
     </Grid>

@@ -41,18 +41,13 @@ export const deleteContact = (userUid, id) => {
   };
 };
 
-export const updateContact = (userUid) => {
-  let updatedContact = {
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    contactType: "",
-    contactOptions: "",
-  };
+export const updateContact = (userUid, updatedContact, id) => {
   return (dispatch) => {
-    FirebaseDatabe.ref("/users/" + userUid + "/contacts/")
-      .set({ updateContact })
+    FirebaseDatabe.ref("/users/" + userUid + "/contacts/" + id)
+      .update(updatedContact)
       .then(() => dispatch({ type: "UPDATE_CONTACT", payload: updatedContact }))
       .catch((error) => dispatch({ type: "ERROR", payload: error.message }));
   };
 };
+
+

@@ -19,9 +19,9 @@ export const contactReducer = (state = INITIAL_STATE, action) => {
     case "UPDATE_CONTACT":
       return {
         ...state,
-        contact: action.payload,
+        contact: [...state.contact, action.payload],
         error: undefined,
-      };
+      }; 
     case "DELETE_CONTACT":
       return {
         ...state,

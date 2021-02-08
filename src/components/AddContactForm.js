@@ -6,8 +6,10 @@ import Calendar from "react-calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { createContact } from "../redux/contacts/contactAction";
 import { Redirect } from "react-router-dom";
-
-const AddContactForm = ({ isEdit }) => {
+import { useHistory } from "react-router-dom";
+import { updateContact } from "../redux/contacts/contactAction";
+import moment from "moment";
+const AddContactForm = ({ isEdit, contactList, id }) => {
   const dispatch = useDispatch();
   const [contactData, setContactData] = useState({
     firstName: "",
@@ -20,15 +22,8 @@ const AddContactForm = ({ isEdit }) => {
       email: "",
       pager: "",
     },
+    favorites: false,
   });
-  const [closeCalendar, setCloseCalendar] = useState(false);
-  const closeCalendarHandler = () => {
-    setCloseCalendar(!closeCalendar);
-  };
-
-  const userUid = useSelector((state) => state.userReducer.user.user.uid);
-  const [error, setError] = useState(false);
-  const [redirect, setRedirect] = useState("");
 
   useEffect(() => {
     setContactData({
@@ -41,6 +36,23 @@ const AddContactForm = ({ isEdit }) => {
       },
     });
   }, [contactData.contactType]);
+
+  useEffect(() => {
+    if (isEdit) {
+      const findContact = contactList.find((element) => element.id === id);
+      console.log(findContact, "nasao sam kontakta");
+      setContactData(findContact);
+    }
+  }, []);
+
+  const [closeCalendar, setCloseCalendar] = useState(false);
+  const closeCalendarHandler = () => {
+    setCloseCalendar(!closeCalendar);
+  };
+
+  const userUid = useSelector((state) => state.userReducer.user.user.uid);
+  const [error, setError] = useState(false);
+  const [redirect, setRedirect] = useState("");
 
   const contactDataChange = ({ target }) => {
     const { name, value } = target;
@@ -59,9 +71,10 @@ const AddContactForm = ({ isEdit }) => {
   };
 
   const handleDateChange = (value) => {
+    console.log(value, "DATE");
     setContactData({
       ...contactData,
-      birthDate: value,
+      birthDate: moment(value).format("DD.MM.YYYY"),
     });
   };
 
@@ -107,8 +120,14 @@ const AddContactForm = ({ isEdit }) => {
     return <Redirect to="/adresar" />;
   }
 
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    console.log(userUid, contactData, "wo1921921919219219192192");
+    dispatch(updateContact(userUid, contactData, id));
+  };
+
   return (
-    <Form onSubmit={handleContactSubmit}>
+    <Form onSubmit={isEdit ? handleUpdate : handleContactSubmit}>
       <Form.Input
         maxLength="100"
         type="text"
@@ -117,6 +136,7 @@ const AddContactForm = ({ isEdit }) => {
         onChange={contactDataChange}
         value={contactData.firstName}
       />
+      {console.log(contactData, "stejt")}
 
       <Form.Input
         maxLength="200"
@@ -130,7 +150,10 @@ const AddContactForm = ({ isEdit }) => {
         {!closeCalendar ? <p>Date of Birth</p> : <p>Close</p>}
       </Button>
       {closeCalendar ? (
-        <Calendar value={contactData.birthDate} onChange={handleDateChange} />
+        <Calendar
+          value={moment(contactData.birthDate).toDate()}
+          onChange={handleDateChange}
+        />
       ) : null}
       {error && !contactData.firstName && <p>First Name is required</p>}
       {error && !contactData.lastName && <p>Last Name is required</p>}
@@ -139,7 +162,9 @@ const AddContactForm = ({ isEdit }) => {
         id="contactOptions"
         placeholder="Select type of contact"
         onChange={changeStatus}
+        value={contactData.contactType}
       >
+        {console.log(contactData.contactType, "yoowqkewq")}
         <option value="" selected hidden>
           Choose here
         </option>
@@ -153,7 +178,6 @@ const AddContactForm = ({ isEdit }) => {
         <option value="email">Email</option>
         <option value="pager"> Pager</option>
       </select>
-
       {contactData.contactType && (
         <>
           <Form.Input
@@ -169,7 +193,8 @@ const AddContactForm = ({ isEdit }) => {
           )}
         </>
       )}
-      <Button type="submit">Add Contact</Button>
+      {!isEdit ? <Button type="submit">Add Contact</Button> : null}
+      {isEdit ? <Button type="submit">Update</Button> : null}
     </Form>
   );
 };
