@@ -12,7 +12,6 @@ const AddressBookForm = () => {
 
   const userUid = useSelector((state) => state.userReducer?.user.user.uid);
   const contacts = useSelector((state) => state.contactReducer.contact);
-  console.log(contacts, "okwkqoewkqoekwoqkoewqkoewoqkekowqkoeqw");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
   const [contactList, setContactList] = useState(contacts);
