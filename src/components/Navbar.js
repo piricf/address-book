@@ -1,25 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Menu } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import { Link, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/auth/userAction";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const [redirect, setRedirect] = useState(false);
 
   const { user } = useSelector((state) => state.userReducer);
 
   const logout = () => {
     dispatch(logoutUser());
+    // history.push("/");
+    setRedirect(true);
   };
 
-  useEffect(() => {
-    if (!user) {
-      history.push("/");
-    }
-  }, [user, history]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     history.push("/");
+  //   }
+  // }, [user, history]);
+
+  const redirectTo = redirect;
+  if (redirectTo) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Menu secondary>
@@ -34,15 +41,12 @@ const Navbar = () => {
         </Menu.Menu>
       ) : null}
       <Menu.Menu position="right">
-        {/* <Menu.Item>
-          <Input icon="search" placeholder="Search..." />
-        </Menu.Item> */}
         {user ? (
-          <Button to="/" onClick={logout}>
+          <Button onClick={logout}>
             <Menu.Item>Log Out</Menu.Item>
           </Button>
         ) : (
-          <Button to="/">
+          <Button>
             <Menu.Item>Log In</Menu.Item>
           </Button>
         )}

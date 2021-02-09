@@ -12,7 +12,7 @@ const LoginForm = () => {
     password: "",
   });
   const history = useHistory();
-  const { user, error } = useSelector((state) => state.userReducer);
+  const { user } = useSelector((state) => state.userReducer);
 
   useEffect(() => {
     if (user) {
@@ -50,7 +50,6 @@ const LoginForm = () => {
       });
     }
   };
-  console.log(error);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -58,10 +57,6 @@ const LoginForm = () => {
     dispatch(createUser(values.email, values.password));
     validation(values);
   };
-
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
 
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
@@ -93,7 +88,6 @@ const LoginForm = () => {
               onChange={handleLoginChange}
             />
             {values.password && <p> {validation(values).password} </p>}
-            <p>{error}</p>
             <Button color="teal" fluid size="large" type="submit">
               Log In
             </Button>

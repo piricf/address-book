@@ -1,10 +1,10 @@
 import React from "react";
-import ContactForm from "../components/ContactForm";
+import AddContactForm from "../components/AddContactForm";
 
 const AddContactView = () => {
   return (
     <div>
-      <ContactForm />
+      <AddContactForm />
     </div>
   );
 };
