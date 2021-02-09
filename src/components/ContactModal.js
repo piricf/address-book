@@ -30,13 +30,6 @@ const ContactModal = ({ contactList, id }) => {
         <Button color="black" onClick={() => setOpen(false)}>
           Back
         </Button>
-        <Button
-          content="Save contact"
-          labelPosition="right"
-          icon="checkmark"
-          onClick={() => setOpen(false)}
-          positive
-        />
       </Modal.Actions>
     </Modal>
   );

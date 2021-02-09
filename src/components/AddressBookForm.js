@@ -10,7 +10,7 @@ const AddressBookForm = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const userUid = useSelector((state) => state.userReducer?.user.user.uid);
+  const userUid = useSelector((state) => state.userReducer.user.user.uid);
   const contacts = useSelector((state) => state.contactReducer.contact);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
@@ -29,16 +29,16 @@ const AddressBookForm = () => {
     setContactList(sorted);
   };
 
-  const handleFavorites = (id) => (e) => {
-    const favoriteContacts = contactList.map((element) =>
-      element.id === id
-        ? { ...element, favorites: !element.favorites }
-        : element
-    );
-    const findContact = contactList.find((element) => element.id === id);
-    setContactList(favoriteContacts);
-    dispatch(updateContact(userUid, findContact, id));
+  const handleFavorites = (id) => {
+    const selectedContact = contactList.find((contact) => contact.id === id);
+    selectedContact.favorites = !selectedContact.favorites;
+
+    dispatch(updateContact(userUid, selectedContact, id));
   };
+
+  useEffect(() => {
+    setContactList(contacts);
+  }, [contacts]);
 
   useEffect(() => {
     // if (!userUid) {
@@ -46,7 +46,7 @@ const AddressBookForm = () => {
     // } else {
     dispatch(getAllContacts(userUid));
     //}
-  }, [dispatch, userUid, history]);
+  }, [dispatch, userUid]);
 
   const onPageChange = (e, data) => {
     const { activePage } = data;
@@ -58,7 +58,6 @@ const AddressBookForm = () => {
     setPageSize(value);
   };
 
-  console.log(contactList, "list");
   const paginateContacts = contactList.slice(
     pageSize * (page - 1),
     pageSize * (page - 1) + pageSize
@@ -67,7 +66,7 @@ const AddressBookForm = () => {
   return (
     <div>
       <Header textAlign="center" style={{ height: "5vh" }}>
-        Your Address book!
+        Adresar!
       </Header>
       <div
         style={{
@@ -80,13 +79,13 @@ const AddressBookForm = () => {
           style={{ background: "none", fontSize: "20px" }}
           onClick={sortByLastName}
         >
-          <Icon name="sort alphabet up"></Icon>
+          <Icon name="sort alphabet down"></Icon>
         </Button>
         <Button
           style={{ background: "none", fontSize: "20px" }}
           onClick={sortByLastNameDown}
         >
-          <Icon name="sort alphabet down"></Icon>
+          <Icon name="sort alphabet up"></Icon>
         </Button>
         <select
           style={{
@@ -133,7 +132,7 @@ const AddressBookForm = () => {
             />
           ))}
       </div>
-      <div style={{ marginLeft: "1300px" }}>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <Pagination
           activePage={page}
           onPageChange={onPageChange}

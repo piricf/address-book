@@ -6,7 +6,6 @@ import Calendar from "react-calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { createContact } from "../redux/contacts/contactAction";
 import { Redirect } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import { updateContact } from "../redux/contacts/contactAction";
 import moment from "moment";
 const AddContactForm = ({ isEdit, contactList, id }) => {
@@ -40,10 +39,9 @@ const AddContactForm = ({ isEdit, contactList, id }) => {
   useEffect(() => {
     if (isEdit) {
       const findContact = contactList.find((element) => element.id === id);
-      console.log(findContact, "nasao sam kontakta");
       setContactData(findContact);
     }
-  }, []);
+  }, [isEdit]);
 
   const [closeCalendar, setCloseCalendar] = useState(false);
   const closeCalendarHandler = () => {
@@ -71,7 +69,6 @@ const AddContactForm = ({ isEdit, contactList, id }) => {
   };
 
   const handleDateChange = (value) => {
-    console.log(value, "DATE");
     setContactData({
       ...contactData,
       birthDate: moment(value).format("DD.MM.YYYY"),
@@ -122,12 +119,18 @@ const AddContactForm = ({ isEdit, contactList, id }) => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    console.log(userUid, contactData, "wo1921921919219219192192");
     dispatch(updateContact(userUid, contactData, id));
   };
 
   return (
-    <Form onSubmit={isEdit ? handleUpdate : handleContactSubmit}>
+    <Form
+      style={
+        isEdit
+          ? { margin: "10px 10px 10px 10px" }
+          : { margin: "200px 500px 500px 500px" }
+      }
+      onSubmit={isEdit ? handleUpdate : handleContactSubmit}
+    >
       <Form.Input
         maxLength="100"
         type="text"
@@ -136,7 +139,6 @@ const AddContactForm = ({ isEdit, contactList, id }) => {
         onChange={contactDataChange}
         value={contactData.firstName}
       />
-      {console.log(contactData, "stejt")}
 
       <Form.Input
         maxLength="200"
@@ -146,11 +148,16 @@ const AddContactForm = ({ isEdit, contactList, id }) => {
         onChange={contactDataChange}
         value={contactData.lastName}
       />
-      <Button color="facebook" onClick={closeCalendarHandler}>
+      <Button
+        style={{ marginTop: "20px", marginBottom: "20px" }}
+        color="facebook"
+        onClick={closeCalendarHandler}
+      >
         {!closeCalendar ? <p>Date of Birth</p> : <p>Close</p>}
       </Button>
       {closeCalendar ? (
         <Calendar
+          style={{ marginBottom: "20px" }}
           value={moment(contactData.birthDate).toDate()}
           onChange={handleDateChange}
         />
@@ -164,7 +171,6 @@ const AddContactForm = ({ isEdit, contactList, id }) => {
         onChange={changeStatus}
         value={contactData.contactType}
       >
-        {console.log(contactData.contactType, "yoowqkewq")}
         <option value="" selected hidden>
           Choose here
         </option>
@@ -193,7 +199,11 @@ const AddContactForm = ({ isEdit, contactList, id }) => {
           )}
         </>
       )}
-      {!isEdit ? <Button type="submit">Add Contact</Button> : null}
+      {!isEdit ? (
+        <Button style={{ marginTop: "50px" }} color="facebook" type="submit">
+          Add Contact
+        </Button>
+      ) : null}
       {isEdit ? <Button type="submit">Update</Button> : null}
     </Form>
   );

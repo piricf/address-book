@@ -36,7 +36,9 @@ export const deleteContact = (userUid, id) => {
     FirebaseDatabe.ref("/users/" + userUid + "/contacts/")
       .child(`${id}`)
       .remove()
-      .then(() => dispatch({ type: "DELETE_CONTACT" }))
+      .then(() => {
+        dispatch(getAllContacts(userUid));
+      })
       .catch((error) => dispatch({ type: "ERROR", payload: error.message }));
   };
 };
@@ -45,9 +47,9 @@ export const updateContact = (userUid, updatedContact, id) => {
   return (dispatch) => {
     FirebaseDatabe.ref("/users/" + userUid + "/contacts/" + id)
       .update(updatedContact)
-      .then(() => dispatch({ type: "UPDATE_CONTACT", payload: updatedContact }))
+      .then(() => {
+        dispatch(getAllContacts(userUid));
+      })
       .catch((error) => dispatch({ type: "ERROR", payload: error.message }));
   };
 };
-
-

@@ -21,22 +21,22 @@ const ContactCardForm = ({
   handleFavorites,
 }) => {
   const dispatch = useDispatch();
-  const [redirect, setRedirect] = useState(false);
+  // const [redirect, setRedirect] = useState(false);
   const [details, setDetails] = useState(false);
 
   const deleteContactById = () => {
     dispatch(deleteContact(userUid, id));
-    setRedirect(true);
+    // setRedirect(true);
   };
 
   const showDetails = () => {
     setDetails(!details);
   };
 
-  const redirectTo = redirect;
-  if (redirectTo) {
-    return <Redirect to="/adresar" />;
-  }
+  // const redirectTo = redirect;
+  // if (redirectTo) {
+  //   return <Redirect to="/adresar" />;
+  // }
 
   const formatDate = moment(birthDate).format("DD.MM.YYYY");
 
@@ -99,12 +99,17 @@ const ContactCardForm = ({
         >
           <Icon link name="trash" style={{ fontSize: "20px" }} />
         </Button>
-        <Button
-          style={favorites ? { backgroundColor: "red" } : { backgroundColor: "blue" }}
-          onClick={handleFavorites(id)}
-        >
-          <Rating />
-        </Button>
+
+        <Rating
+          style={{
+            position: "absolute",
+            right: "180px",
+            top: "29px",
+            fontSize: "20px",
+          }}
+          rating={favorites}
+          onRate={() => handleFavorites(id)}
+        />
       </Card>
     </Grid>
   );
