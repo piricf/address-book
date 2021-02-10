@@ -112,15 +112,16 @@ const AddContactForm = ({ isEdit, contactList, id }) => {
     }
   };
 
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    dispatch(updateContact(userUid, contactData, id));
+    setRedirect(true);
+  };
+
   const redirectTo = redirect;
   if (redirectTo) {
     return <Redirect to="/adresar" />;
   }
-
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    dispatch(updateContact(userUid, contactData, id));
-  };
 
   return (
     <Form

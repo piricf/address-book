@@ -4,12 +4,9 @@ import { Header, Pagination, Icon, Button } from "semantic-ui-react";
 import { getAllContacts, updateContact } from "../redux/contacts/contactAction";
 import ContactCardForm from "./ContactCardForm";
 import "semantic-ui-css/semantic.min.css";
-import { useHistory } from "react-router-dom";
 
 const AddressBookForm = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-
   const userUid = useSelector((state) => state.userReducer.user.user.uid);
   const contacts = useSelector((state) => state.contactReducer.contact);
   const [page, setPage] = useState(1);
@@ -41,11 +38,7 @@ const AddressBookForm = () => {
   }, [contacts]);
 
   useEffect(() => {
-    // if (!userUid) {
-    //   history.push("/");
-    // } else {
     dispatch(getAllContacts(userUid));
-    //}
   }, [dispatch, userUid]);
 
   const onPageChange = (e, data) => {

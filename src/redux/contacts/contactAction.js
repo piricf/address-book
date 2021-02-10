@@ -1,7 +1,6 @@
 import { FirebaseDatabe } from "../../firebase/FirebaseConfig";
 
 export const createContact = (contactData, userUid) => {
-  console.log(contactData);
   return (dispatch) => {
     FirebaseDatabe.ref("/users/" + userUid + "/contacts")
       .push()

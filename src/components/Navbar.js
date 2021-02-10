@@ -13,15 +13,8 @@ const Navbar = () => {
 
   const logout = () => {
     dispatch(logoutUser());
-    // history.push("/");
     setRedirect(true);
   };
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     history.push("/");
-  //   }
-  // }, [user, history]);
 
   const redirectTo = redirect;
   if (redirectTo) {

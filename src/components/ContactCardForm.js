@@ -5,7 +5,6 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import { deleteContact } from "../redux/contacts/contactAction";
 import ContactModal from "./ContactModal";
-import { Redirect } from "react-router-dom";
 import { Rating } from "semantic-ui-react";
 
 const ContactCardForm = ({
@@ -21,22 +20,15 @@ const ContactCardForm = ({
   handleFavorites,
 }) => {
   const dispatch = useDispatch();
-  // const [redirect, setRedirect] = useState(false);
   const [details, setDetails] = useState(false);
 
   const deleteContactById = () => {
     dispatch(deleteContact(userUid, id));
-    // setRedirect(true);
   };
 
   const showDetails = () => {
     setDetails(!details);
   };
-
-  // const redirectTo = redirect;
-  // if (redirectTo) {
-  //   return <Redirect to="/adresar" />;
-  // }
 
   const formatDate = moment(birthDate).format("DD.MM.YYYY");
 
