@@ -24,7 +24,10 @@ const Navbar = () => {
   return (
     <Menu secondary>
       {user ? (
-        <Menu.Menu position="left">
+        <Menu.Menu
+          style={{ marginLeft: "400px", marginTop: "50px" }}
+          position="left"
+        >
           <Link to="/adresar">
             <Menu.Item name="adresar">Adresar</Menu.Item>
           </Link>
